@@ -163,11 +163,11 @@ def updateparticles():
                 forcefactor = forcefactor-1
 
 
-screen = pygame.display.set_mode((ScreenDims, ScreenDims))
+
 count = 0
 count2 = 0
 running = True
-
+screen = pygame.display.set_mode((ScreenDims, ScreenDims))
 while running:
     screen.fill((0, 0, 0))
     for event in pygame.event.get():

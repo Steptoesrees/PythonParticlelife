@@ -1,7 +1,7 @@
 import random
 import math
 import pygame
-
+#particle class
 class particle():
 
     RED = (255, 0, 0)
@@ -15,7 +15,30 @@ class particle():
         self.xvel = float(0.0)
         self.yvel = float(0.0)
 
+
+
 class simulation():
+    def __init__(self):
+        self.screenwidth = 800
+        self.screenheight = 800
+        self.screen = pygame.display.set_mode((self.screenwidth, self.screenheight))
+    def draw(self):
+            pygame.draw.circle(self.screen, (255,255,255), (100,100),10)
+
+    def run(self):
+        running = True
+
+        while running:
+            self.screen.fill((0, 0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+            self.draw()
+
+            pygame.display.flip()
+
+
 
     def randomMatrix():
         rows = []
@@ -34,3 +57,6 @@ class simulation():
             return a * (1 - abs(2 * r - 1 - beta) / (1 - beta))
         else:
             return 8
+
+sim = simulation()
+sim.run()
