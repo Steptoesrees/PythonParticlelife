@@ -35,7 +35,7 @@ class simulation():
         self.screenwidth = 600
         self.screenheight = 600
         self.screen = pygame.display.set_mode((self.screenwidth, self.screenheight),pygame.RESIZABLE)
-        self.particlenum = 400
+        self.particlenum = 300
         self.particles = []
         self.matrix = self.randomMatrix()
         self.maxRadius = 0.2
@@ -47,7 +47,6 @@ class simulation():
             self.particles.append(particle())
 
     def draw(self, i):
-        #debug print(self.particles[i].xpos, self.particles[i].ypos)
         pygame.draw.circle(self.screen, self.colours[self.particles[i].colour], (self.particles[i].xpos,self.particles[i].ypos),2)
 
     def simulate(self):
@@ -91,11 +90,29 @@ class simulation():
             self.particles[i].xpos *= self.screenwidth
             self.particles[i].ypos *= self.screenheight
 
+            if self.particles[i].xpos < self.edgeDistance:
+                self.particles[i].xpos += ((self.edgeDistance - self.particles[
+                    i].xpos) ** 2.1) / 3000  # when within the cushion border, takes the size of the cushion from the position of the particle, so the number is larger the closer to the edge the particle is, then this number is squared to make the increase exponential, divided by 10^4 for a more reasonable amount of force
+
+            if self.particles[i].xpos > self.screenwidth - self.edgeDistance:
+                self.particles[i].xpos -= ((self.edgeDistance - (
+                            self.screenwidth - self.particles[i].xpos)) ** 2.1) / 3000
+
+            if self.particles[i].ypos < self.edgeDistance:
+                self.particles[i].ypos += ((self.edgeDistance - self.particles[
+                    i].ypos) ** 2.1) / 3000  # when within the cushion border, takes the size of the cushion from the position of the particle, so the number is larger the closer to the edge the particle is, then this number is squared to make the increase exponential, divided by 10^4 for a more reasonable amount of force
+
+            if self.particles[i].ypos > self.screenwidth - self.edgeDistance:
+                self.particles[i].ypos -= ((self.edgeDistance - (
+                            self.screenwidth - self.particles[i].ypos)) ** 2.1) / 3000
+
 
             self.draw(i)
 
             self.particles[i].xpos /= self.screenwidth
             self.particles[i].ypos /= self.screenheight
+
+
 
     def run(self):
         running = True
