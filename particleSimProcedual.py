@@ -3,6 +3,7 @@ import pygame
 import math
 from time import sleep
 import colorsys
+global running
 global matrix
 global forcefactor
 
@@ -161,6 +162,8 @@ def updateparticles():
                 forcefactor = forcefactor+1
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
                 forcefactor = forcefactor-1
+            if event.type == pygame.QUIT:
+                running = False
 
 
 
