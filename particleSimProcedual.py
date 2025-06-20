@@ -15,6 +15,7 @@ def randomMatrix():
         for j in range(0, ColourNum):
             row.append(random.uniform(0, 1) * 2 - 1)
         rows.append(row)
+    print(rows)
     return rows
 
 
@@ -32,7 +33,7 @@ flowDiv = 15000000
 forcefactor = 10
 edgeDistance = 150
 ParticleNum = 300
-ColourNum = 5
+ColourNum = 3
 Dimensions = 2
 ScreenDims = 500
 DeltaTime = 0.01
