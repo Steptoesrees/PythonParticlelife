@@ -9,32 +9,23 @@ import pygame #imports they pygame library
 
 
 class Button():
-    """a single button"""
+    #A button
     def __init__(self,colour, xloc, yloc, width, height,surface):
-        """constructor method"""
-        self.colour = colour #sets the colour of the button
-        self.button_rect = pygame.Rect(xloc,yloc,width,height) #sets the position and size of the button
-        self.surface = surface #sets the surface the button is drawn onto
+        self.colour = colour 
+        self.button_rect = pygame.Rect(xloc,yloc,width,height) 
+        self.surface = surface 
 
 
-    def draw(self):#defines the procedure
-        """draws the button onto the screen"""
-        pygame.draw.rect(self.surface,self.colour,(self.button_rect)) #draws a full colour button onto the surface
-        pygame.draw.rect(self.surface, (0,0,0), (self.button_rect), 1) #draws a black outline of the button onto the surface
-
-    def darken(self, surface):
-        """overlays a transparent black onto the button to darken it"""
-        dark_surface = pygame.Surface(self.button_rect.size, pygame.SRCALPHA)
-        dark_surface.fill((0, 0, 0, 100))
-        surface.blit(dark_surface, self.button_rect.topleft)
+    def draw(self):
+        pygame.draw.rect(self.surface,self.colour,(self.button_rect)) 
+        pygame.draw.rect(self.surface, (0,0,0), (self.button_rect), 1) 
 
     def click(self, mousepos):
-        """if the mouse is over the button, the button is given a white outline & returns true, otherwise returns false"""
-        if self.button_rect.collidepoint(mousepos):#checks if the mouse is over the button
-            pygame.draw.rect(self.surface, (255, 255, 255), self.button_rect, 1) #draws a white outline
-            return True #returns true
-        else: #otherwise
-            return False #returns false
+        #if the mouse is over the button, return true, otherwise return false
+        if self.button_rect.collidepoint(mousepos):
+            return True
+        else:
+            return False 
 
 
 
@@ -297,17 +288,11 @@ class Simulation():
             self.particles[i].ypos *= self.screen_height
 
             # screen wrapping
-            if self.particles[i].xpos > self.screen_height:  # checks if the particle is off the right side of the simulation area
-                self.particles[i].xpos = (self.particles[i].xpos % self.screen_height)
+             # checks if the particle is off the right side of the simulation area
+            self.particles[i].xpos = (self.particles[i].xpos % self.screen_height)
 
-            if self.particles[i].xpos < self.screen_height:
-                self.particles[i].xpos = (self.particles[i].xpos % self.screen_height)
 
-            if self.particles[i].ypos < self.screen_height:
-                self.particles[i].ypos = (self.particles[i].ypos % self.screen_height)
-
-            if self.particles[i].ypos > self.screen_height:
-                self.particles[i].ypos = (self.particles[i].ypos % self.screen_height)
+            self.particles[i].ypos = (self.particles[i].ypos % self.screen_height)
 
             # self.particles[i].drawVelocityVector()
             self.particles[i].draw(2)
