@@ -28,7 +28,7 @@ class main():
         P.changeParticleCount(200)
         cam = Camera(0, 0,screen_info.current_h*3)
         print(P)
-        menu = Menu.Menu(screen, screen_info.current_w, screen_info.current_h)
+        menu = Menu.Menu(screen, screen_info.current_w, screen_info.current_h, P)
         taskbar = Menu.Taskbar(screen, screen_info.current_w, screen_info.current_h, menu, P)
         
         
@@ -56,7 +56,8 @@ class main():
                     if event.button == 1:
                         pygame.mouse.get_rel()
                         dragging = True
-                        taskbar.click_buttons()                        
+                        taskbar.click_buttons()     
+                        menu.force_graph.click_buttons()                   
 
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
