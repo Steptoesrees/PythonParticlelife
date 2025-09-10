@@ -1,24 +1,63 @@
 import pygame
 from Button import Button
-from Main import main
-from physicsEngine import PhysicsEngine
-
+from Slider import Sliders
 class Menu:
     def __init__(self,screen, screen_width, screen_height, physics):
         self.screen = screen
+
+
         self.menu = pygame.Surface((screen_height/2,screen_height))
+        self.menu_rect = self.menu.get_rect() #for collision
+        
         self.visible = False
         self.graph_or_matrix = 1 #1 for graph, 0 for matrix
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.create_sliders()
+
         self.force_graph = ForceGraph(self.menu, 0, 40, screen_height/4, screen_height/2, physics)
+
+        self.create_buttons()
+        
+    def mouse_in_menu(self, mousepos):
+        return self.menu_rect.collidepoint(mousepos)
 
     def draw(self):
         self.menu.fill((43,42,51))
         if self.visible:
-            self.force_graph.draw()
+            if self.graph_or_matrix == 1:
+                self.force_graph.draw()
+                
+            else:
+                pass
+            self.draw_sliders()
+            self.draw_buttons()
             self.screen.blit(self.menu, (0,0))
-            
-
     
+    def toggle_graph_matrix(self):
+        if self.graph_or_matrix == 1:
+            self.graph_or_matrix = 0
+        else:
+            self.graph_or_matrix = 1
+
+    def create_buttons(self):
+        self.graph_matrix_button = Button((100,100,100), (self.screen_height/2)-80,(self.screen_height/4), 80, 40, self.menu, self.toggle_graph_matrix, None, text="G/M")
+
+    def draw_buttons(self):
+        self.graph_matrix_button.draw()
+
+
+
+
+    def create_sliders(self):
+        pos = (10, 40 + self.screen_height/4 + 20)
+        self.slider = Sliders((pos[0],pos[1]), whole_width=self.screen_height/2 - 20)
+        self.slider2 = Sliders((pos[0],pos[1]+50), whole_width=self.screen_height/2 - 20, neg=True)
+
+    def draw_sliders(self):
+        self.slider.draw(self.menu)
+        self.slider2.draw(self.menu)
+
         
 class Taskbar():
 
@@ -30,25 +69,26 @@ class Taskbar():
 
         self.screen = screen
         self.taskbar = pygame.Surface((screen_width, 40))
+        self.taskbar_rect = self.taskbar.get_rect() #for collision
         print(self.physics_engine)
 
-        #create buttons
-        self.menu_button = Button((100,100,100), 0, 0, 40, 40, self.taskbar, 'M', self.toggle_menu, None)
-        self.add_particle_button = Button((100,100,100), 100, 0, 100, 40, self.taskbar, '+', self.physics_engine.addParticle, None)
-        self.remove_particle_button = Button((100,100,100), 210, 0, 100, 40, self.taskbar, '-', self.physics_engine.removeParticle, None)
-        self.reset_matrix_button = Button((100,100,100), 320, 0, 100, 40, self.taskbar, 'R', self.physics_engine.randomMatrix, None)
-        self.pause_button = Button((100,100,100), 430, 0, 100, 40, self.taskbar, 'Pause', self.pause_simulation, None)
-        self.exit_button = Button((200,0,0), self.screen_width-40, 0, 40, 40, self.taskbar, 'X', self.exit, None)
+        
+        self.menu_button = Button((100,100,100), 0, 0, 40, 40, self.taskbar, self.toggle_menu, None,text='M')
+        self.add_particle_button = Button((100,100,100), 100, 0, 100, 40, self.taskbar, self.physics_engine.addParticle, None,text='+')
+        self.remove_particle_button = Button((100,100,100), 210, 0, 100, 40, self.taskbar, self.physics_engine.removeParticle, None,text='-')
+        self.reset_matrix_button = Button((100,100,100), 320, 0, 100, 40, self.taskbar, self.physics_engine.randomMatrix, None, text='R')
+        self.pause_button = Button((100,100,100), 430, 0, 100, 40, self.taskbar, self.pause_simulation, None,text='Pause')
+        self.exit_button = Button((200,0,0), self.screen_width-40, 0, 40, 40, self.taskbar, self.exit, None,text='×')
 
 
     def draw(self):
         self.taskbar.fill((20,20,20))
-        self.menu_button.draw()
-        self.add_particle_button.draw()
-        self.remove_particle_button.draw()
-        self.reset_matrix_button.draw()
-        self.pause_button.draw()
-        self.exit_button.draw()
+        self.menu_button.draw(BR=3)
+        self.add_particle_button.draw(BR=3)
+        self.remove_particle_button.draw(BR=3)
+        self.reset_matrix_button.draw(BR=3)
+        self.pause_button.draw(BR=3)
+        self.exit_button.draw(text_pos=(10,-5))
         self.screen.blit(self.taskbar, (0,0))
 
     def click_buttons(self):
@@ -70,7 +110,8 @@ class Taskbar():
         pygame.quit()
         quit()
     
-        
+    def mouse_in_taskbar(self, mousepos):
+        return self.taskbar_rect.collidepoint(mousepos)
     
 
 class ForceGraph():
@@ -89,9 +130,9 @@ class ForceGraph():
 
         self.physics_engine = Physics
 
-        self.graph1_b = Button((255,0,0), 10, self.height-30, 20, 20, self.graph, '', self.set_graph, 0)
-        self.graph2_b = Button((0,255,0), 40, self.height-30, 20, 20, self.graph, '', self.set_graph, 1)
-        self.graph3_b = Button((0,0,255), 70, self.height-30, 20, 20, self.graph, '', self.set_graph, 2)
+        self.graph1_b = Button((255,0,0), 10, self.height-30, 20, 20, self.graph, self.set_graph, 0)
+        self.graph2_b = Button((0,255,0), 40, self.height-30, 20, 20, self.graph, self.set_graph, 1)
+        self.graph3_b = Button((0,0,255), 70, self.height-30, 20, 20, self.graph, self.set_graph, 2)
 
         self.colour_ID = 0
         self.colours = [(255,0,0),(0,255,0),(0,0,255)]
@@ -113,6 +154,7 @@ class ForceGraph():
 
 
     def draw(self):
+        
         self.graph.fill((40,40,40))
         self.drawAxes()
         self.graph.blit(self.axis, (80,10))
@@ -121,6 +163,7 @@ class ForceGraph():
         self.screen.blit(self.graph, (self.xloc,self.yloc))
         
     def drawAxes(self):
+        
         #axis 
         self.graph1_b.draw()
         self.graph2_b.draw()
@@ -146,9 +189,16 @@ class ForceGraph():
         self.graph.blit(miny_label, (70 - miny_label.get_width()//2, self.height-60 - maxy_label.get_height()//2))
         self.graph.blit(maxy_label, (70 - maxy_label.get_width()//2, 10 - maxy_label.get_height()//2))
 
+        
+
 
     def plotGraph(self):
-        self.axis.fill((0,0,0))
+        if self.colour_ID == 0:
+            self.axis.fill((40,0,0))
+        elif self.colour_ID == 1:
+            self.axis.fill((0,40,0))
+        else:
+            self.axis.fill((0,0,40))
         midr = (1+self.physics_engine.beta)/2
 
         pygame.draw.line(self.axis, (255,255,255), (0,self.axis_height), 
@@ -160,8 +210,5 @@ class ForceGraph():
                              (midr * self.axis_width, self.axis_height/2 - (a * (self.axis_height/2))))
             
             pygame.draw.line(self.axis, self.colours[counter], (midr * self.axis_width, self.axis_height/2 - (a * (self.axis_height/2))), 
-                             (self.width, self.axis_height/2))
+                             (self.axis_width, self.axis_height/2))
             
-        
-        
-

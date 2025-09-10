@@ -1,6 +1,4 @@
 import pygame
-from Particle import Particle
-from physicsEngine import PhysicsEngine
 
 class Camera:
     def __init__(self, cam_x, cam_y, cam_size):
@@ -8,6 +6,7 @@ class Camera:
         self.cam = pygame.Surface((self.cam_size,self.cam_size))
         self.cam_x = cam_x
         self.cam_y = cam_y
+        self.dragging = False
 
 
     def drawParticles(self, screen, physics):

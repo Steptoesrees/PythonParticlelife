@@ -2,7 +2,8 @@ import pygame
 
 
 class Button():
-    def __init__(self,colour, xloc, yloc, width, height,surface, text, use, value):
+    def __init__(self,colour, xloc, yloc, width, height,surface, use, value, 
+                 text=''):
         self.colour = colour 
         self.button_rect = pygame.Rect(xloc,yloc,width,height) 
         self.surface = surface 
@@ -14,13 +15,17 @@ class Button():
 
 
 
-    def draw(self):
-        pygame.draw.rect(self.surface,self.colour,(self.button_rect)) 
+    def draw(self, BR=0, text_pos=(None,None)):
+        pygame.draw.rect(self.surface,self.colour,(self.button_rect), border_radius=BR) 
 
         if self.text != '':
             text = self.font.render(self.text, True, (255,255,255))
-            text_x = self.button_rect.x + (self.button_rect.width/2 - text.get_width()/2)
-            text_y = self.button_rect.y + (self.button_rect.height/2 - text.get_height()/2)
+            if text_pos != (None,None):
+                text_x = self.button_rect.x + text_pos[0]
+                text_y = self.button_rect.y + text_pos[1]
+            else:
+                text_x = self.button_rect.x + (self.button_rect.width/2 - text.get_width()/2)
+                text_y = self.button_rect.y + (self.button_rect.height/2 - text.get_height()/2)
             self.surface.blit(text, (text_x, text_y))
 
     def click(self, pos):
