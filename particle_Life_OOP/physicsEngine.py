@@ -23,13 +23,12 @@ class PhysicsEngine():
     def removeParticle(self):
         if len(self.particles) > 0:
             self.particles.pop()
-
     def changeParticleCount(self, amount):
-        if amount > len(self.particles)+1:
-            for i in range(amount-len(self.particles)):
+        if amount > 0:
+            for i in range(amount):
                 self.addParticle()
-        elif amount < len(self.particles)+1:
-            for i in range(len(self.particles)-amount):
+        elif amount < 0:
+            for i in range(-amount):
                 self.removeParticle()
     
     def randomMatrix(self): 

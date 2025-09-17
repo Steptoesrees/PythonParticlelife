@@ -24,7 +24,7 @@ class main():
         
         physics_engine = PhysicsEngine()
         physics_engine.changeParticleCount(200)
-        cam = Camera(0, 0,screen_info.current_h*2)
+        cam = Camera(0, 0,screen_info.current_h*3)
         menu = Menu.Menu(screen, screen_info.current_w, screen_info.current_h, physics_engine)
         taskbar = Menu.Taskbar(screen, screen_info.current_w, screen_info.current_h, menu, physics_engine)
         
@@ -36,7 +36,7 @@ class main():
             screen.fill((0, 0, 0))
 
             for event in pygame.event.get():
-             
+                
                 if event.type == pygame.QUIT:
                     running = False
                 
@@ -56,23 +56,18 @@ class main():
                         if taskbar.mouse_in_taskbar(mousepos):
                             taskbar.click_buttons()   
                         elif menu.mouse_in_menu(mousepos):  
-                            menu.force_graph.click_buttons()
-                            menu.sliderdrag = True 
-                        else:  
-                            cam.dragging = True
+                            menu.force_graph.click_buttons()        
+                        cam.dragging = True
 
 
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
                         cam.dragging = False
-                        menu.sliderdrag = False
-
                 
                 if event.type == pygame.MOUSEMOTION:
                     rel = list(pygame.mouse.get_rel())
-                    cam.pan(rel[0], rel[1])
-                    menu.slide(mousepos, rel[0])
-                    
+                    if cam.dragging:
+                        cam.pan(rel[0], rel[1])
                 
                 
 
