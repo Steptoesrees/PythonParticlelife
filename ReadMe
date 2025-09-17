@@ -64,3 +64,6 @@ The project is organized into several Python files within the `particle_Life_OOP
 *   [`Slider.py`](particle_Life_OOP/Slider.py): Implements the slider UI widget for adjusting simulation parameters.
 *   [`Button.py`](particle_Life_OOP/Button.py): A simple button class for UI interactions.
 *   [`Camera.py`](particle_Life_OOP/Camera.py): Handles camera controls like zoom and pan, allowing you to navigate the simulation space.
+
+---
+_This README was
