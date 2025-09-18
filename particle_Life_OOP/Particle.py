@@ -17,7 +17,7 @@ class Particle():
 
 
     def drawParticle(self, screen, ssize):
-        psize = ssize//500
+        psize = ssize//600
         if psize < 1:
             psize = 1
         pygame.draw.circle(screen, self.colour,(self.pos_x * ssize, self.pos_y * ssize), psize)

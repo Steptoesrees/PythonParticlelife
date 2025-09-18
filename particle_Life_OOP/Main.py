@@ -1,6 +1,6 @@
 import pygame
 import ctypes
-from physicsEngine import PhysicsEngine
+from physicsEngine_copy import PhysicsEngine
 from Camera import Camera
 
 import Menu
@@ -92,7 +92,8 @@ class main():
             taskbar.draw()
             
             pygame.display.update()
-            clock.tick(60)
+            clock.tick(30)
+            print(clock.get_fps())
 
 
 if __name__ == '__main__':
