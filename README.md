@@ -1,3 +1,6 @@
 # Python Particle life
-simple program, runs particle life using python \n
-to run just run the main file in python
+<p>
+simple program, runs particle life using python
+</p>
+
+<p>to run just run the main file in python</p>
