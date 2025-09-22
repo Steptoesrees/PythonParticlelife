@@ -1,6 +1,7 @@
 import pygame
 from Button import Button
 from Slider import Sliders
+from input_box import InputBox
 class Menu:
     def __init__(self,screen, screen_width, screen_height, physics):
         self.screen = screen
@@ -59,7 +60,7 @@ class Menu:
 
     def create_sliders(self):
         pos = (10, 40 + self.screen_height/4 + 20)
-        self.particle_num_slider = Sliders(self, (pos[0],pos[1]), whole_width=self.screen_height/2 - 20, max_val=3000, slider_val=300, Name='Particles:')
+        self.particle_num_slider = Sliders(self, (pos[0],pos[1]), whole_width=self.screen_height/2 - 20, max_val=5000, slider_val=300, Name='Particles:')
         self.force_factor_slider = Sliders(self, (pos[0],pos[1]+50), whole_width=self.screen_height/2 - 20, neg=True, max_val=20, slider_val=10, Name='Force Factor: ')
         self.beta_slider = Sliders(self, (pos[0],pos[1]+100), whole_width=self.screen_height/2 - 20, max_val=1, slider_val=0.25, Name='Beta: ')
         self.radius_slider = Sliders(self, (pos[0],pos[1]+150), whole_width=self.screen_height/2 - 20, max_val=1, slider_val=0.25, Name='Radius: ')
@@ -72,6 +73,7 @@ class Menu:
 
     def slide(self, mousepos, dx):
         self.particle_num_slider.button_click(mousepos, dx)
+        self.particle_num_slider.slider_value = round(self.particle_num_slider.slider_value,0)
         self.force_factor_slider.button_click(mousepos, dx)
         self.beta_slider.button_click(mousepos, dx)
         self.radius_slider.button_click(mousepos, dx)
@@ -80,6 +82,8 @@ class Menu:
         self.physics_engine.force_Factor = self.force_factor_slider.slider_value
         self.physics_engine.beta = self.beta_slider.slider_value
         self.physics_engine.max_Radius = self.radius_slider.slider_value
+
+        
 
     def update_slider_values(self):
 
@@ -93,6 +97,17 @@ class Menu:
         self.force_factor_slider.updateslider()
         self.beta_slider.updateslider()
         self.radius_slider.updateslider()
+
+        
+
+    def input_event(self, event):
+        mpos = pygame.mouse.get_pos()
+
+        self.particle_num_slider.Input(event, mpos)
+        self.force_factor_slider.Input(event, mpos)
+        self.beta_slider.Input(event, mpos)
+        self.radius_slider.Input(event, mpos)
+        
 
 class Taskbar():
 
@@ -115,9 +130,16 @@ class Taskbar():
         self.pause_button = Button((100,100,100), 430, 0, 100, 20, self.taskbar, self.pause_simulation, None,text='Pause')
         self.exit_button = Button((200,0,0), self.screen_width-40, 0, 40, 20, self.taskbar, self.exit, None,text='×')
 
+        self.font = pygame.font.SysFont('segoeui', 15)
 
-    def draw(self):
+
+    def draw(self, clock):
+        
         self.taskbar.fill((20,20,20))
+        fps = int(clock.get_fps())
+        fps_text = f'FPS: {fps}'
+        fps_label = self.font.render(fps_text, True, (255,255,255))
+        self.taskbar.blit(fps_label, (self.screen_width - 100, 0))
         self.menu_button.draw(BR=3)
         self.add_particle_button.draw(BR=3)
         self.remove_particle_button.draw(BR=3)
@@ -246,4 +268,17 @@ class ForceGraph():
             
             pygame.draw.line(self.axis, self.colours[counter], (midr * self.axis_width, self.axis_height/2 - (a * (self.axis_height/2))), 
                              (self.axis_width, self.axis_height/2))
-            
+
+
+class matrixView():
+    def __init__(self, screen, xloc, yloc, height, width, Physics):
+        self.screen = screen
+
+        self.matrix_view = pygame.Surface((width,height))
+
+        self.xloc = xloc
+        self.yloc = yloc
+        self.width = width
+        self.height = height
+
+        self.physics_engine = Physics

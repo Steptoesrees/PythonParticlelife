@@ -2,6 +2,9 @@ import random
 import pygame
 
 class Particle():
+    #constants
+    ForceVelocityNormaliser = 0.01
+
     #A single particle
     def __init__(self):
         colours = [(255,0,0),(0,255,0),(0,0,255)]
@@ -27,13 +30,13 @@ class Particle():
         self.vel_x *= frictionFactor
         self.vel_y *= frictionFactor
 
-        self.vel_x += totalForceX * 0.01
-        self.vel_y += totalForceY * 0.01
+        self.vel_x += totalForceX * self.ForceVelocityNormaliser
+        self.vel_y += totalForceY * self.ForceVelocityNormaliser
 
 
     def updatePosition(self):
-        self.pos_x += self.vel_x * 0.01
-        self.pos_y += self.vel_y * 0.01
+        self.pos_x += self.vel_x * self.ForceVelocityNormaliser
+        self.pos_y += self.vel_y * self.ForceVelocityNormaliser
 
         if self.pos_x < 0 or self.pos_x > 1:
             self.pos_x %= 1

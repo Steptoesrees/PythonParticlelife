@@ -15,7 +15,6 @@ class main():
 
     def run(self):
         running = True
-        slid = False
         
 
         screen_info = pygame.display.Info()
@@ -36,7 +35,9 @@ class main():
             screen.fill((0, 0, 0))
 
             for event in pygame.event.get():
-             
+
+                menu.input_event(event)
+
                 if event.type == pygame.QUIT:
                     running = False
                 
@@ -89,14 +90,16 @@ class main():
 
             menu.draw()
             
-            taskbar.draw()
+            taskbar.draw(clock)
             
             pygame.display.update()
-            clock.tick(30)
+            clock.tick(31)
             print(clock.get_fps())
 
 
 if __name__ == '__main__':
     pygame.init()
+    pygame.key.set_repeat(500, 50)
+    pygame.key.start_text_input()
     pygame.font.init()
     main()
