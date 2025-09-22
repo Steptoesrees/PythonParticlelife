@@ -59,6 +59,7 @@ class PhysicsEngine():
         if self.paused:
             return
         #handles the interactions between particles
+        """COMMENT HOW THE MATHS WORK BRO FR FR (after making it in numpy ofc kekw)"""
         for i in range(len(self.particles)):
             total_force_x = 0 
             total_force_y = 0 

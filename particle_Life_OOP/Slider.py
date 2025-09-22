@@ -114,7 +114,7 @@ class Sliders:
         mousepos = (mousepos[0]-self.whole_pos[0]  , mousepos[1]- self.whole_pos[1])
         self.input_box.onInput(event, mousepos)
 
-        if self.input_box.color == self.input_box.color_inactive:
+        if self.input_box.colour == self.input_box.colour_inactive:
             try:
                 val = float(self.input_box.text)
                 if val > self.max_val:

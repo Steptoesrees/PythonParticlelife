@@ -58,6 +58,7 @@ class main():
                             taskbar.click_buttons()   
                         elif menu.mouse_in_menu(mousepos):  
                             menu.force_graph.click_buttons()
+                            menu.graph_matrix_button.click((mousepos[0],mousepos[1]))
                             menu.sliderdrag = True 
                         else:  
                             cam.dragging = True
@@ -94,7 +95,6 @@ class main():
             
             pygame.display.update()
             clock.tick(31)
-            print(clock.get_fps())
 
 
 if __name__ == '__main__':
