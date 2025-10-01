@@ -2,7 +2,7 @@ import pygame
 
 
 class Button():
-    def __init__(self,colour, xloc, yloc, width, height,surface, use, value, 
+    def __init__(self,colour, xloc, yloc, width, height,surface, use, value=None, 
                  text=''):
         self.colour = colour 
         self.button_rect = pygame.Rect(xloc,yloc,width,height) 
