@@ -24,7 +24,7 @@ class Menu:
         self.matrix_view = matrixView(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
 
         self.create_buttons()
-        
+
         
     def mouse_in_menu(self, mousepos):
         if self.visible:
@@ -116,7 +116,65 @@ class Menu:
         self.matrix_view.input_event(event, mpos)
         
 
+class Taskbar():
 
+    def __init__(self,screen, screen_width, screen_height, menu, physics_engine):
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.main_menu = menu
+        self.physics_engine = physics_engine
+
+        self.screen = screen
+        self.taskbar = pygame.Surface((screen_width, 20))
+        self.taskbar_rect = self.taskbar.get_rect() #for collision
+
+        
+        self.menu_button = Button((100,100,100), 0, 0, 40, 20, self.taskbar, self.toggle_menu, None,text='M')
+        self.add_particle_button = Button((100,100,100), 100, 0, 100, 20, self.taskbar, self.physics_engine.addParticle, None,text='+')
+        self.remove_particle_button = Button((100,100,100), 210, 0, 100, 20, self.taskbar, self.physics_engine.removeParticle, None,text='-')
+        self.reset_matrix_button = Button((100,100,100), 320, 0, 100, 20, self.taskbar, self.physics_engine.randomMatrix, None, text='R')
+        self.pause_button = Button((100,100,100), 430, 0, 100, 20, self.taskbar, self.pause_simulation, None,text='Pause')
+        self.exit_button = Button((200,0,0), self.screen_width-40, 0, 40, 20, self.taskbar, self.exit, None,text='×')
+
+        self.font = pygame.font.SysFont('segoeui', 15)
+
+
+    def draw(self, clock):
+        
+        self.taskbar.fill((20,20,20))
+        fps = int(clock.get_fps())
+        fps_text = f'FPS: {fps}'
+        fps_label = self.font.render(fps_text, True, (255,255,255))
+        self.taskbar.blit(fps_label, (self.screen_width - 100, 0))
+        self.menu_button.draw(BR=3)
+        self.add_particle_button.draw(BR=3)
+        self.remove_particle_button.draw(BR=3)
+        self.reset_matrix_button.draw(BR=3)
+        self.pause_button.draw(BR=3)
+        self.exit_button.draw(text_pos=(10,-5))
+        self.screen.blit(self.taskbar, (0,0))
+
+    def click_buttons(self):
+        mouse_pos = pygame.mouse.get_pos()
+        self.menu_button.click(mouse_pos)
+        self.add_particle_button.click(mouse_pos)
+        self.remove_particle_button.click(mouse_pos)
+        self.reset_matrix_button.click(mouse_pos)
+        self.pause_button.click(mouse_pos)
+        self.exit_button.click(mouse_pos)
+
+    def toggle_menu(self):
+        self.main_menu.visible = not self.main_menu.visible
+
+    def pause_simulation(self):
+        self.physics_engine.paused = not self.physics_engine.paused
+
+    def exit(self):
+        pygame.quit()
+        quit()
+    
+    def mouse_in_taskbar(self, mousepos):
+        return self.taskbar_rect.collidepoint(mousepos)
     
 
 
