@@ -1,5 +1,7 @@
 import pygame
 from input_box import InputBox
+from Button import Button
+from saveLoad import save
 
 class matrixView():
     def __init__(self, screen, xloc, yloc, height, width, Physics):
@@ -21,6 +23,9 @@ class matrixView():
         self.cell_size = min(self.width // self.cell_ratio, self.height // self.cell_ratio)
         self.header_thickness = self.cell_size//self.cell_ratio
         self.cells = self.create_cells()
+
+        self.saveButton((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+5), 80,20,self.screen, save.save_input, text = "Save Matrix")
+        self.load = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+30), 80,20,self.screen, save.load_dropdown, text = "Load Matrix")
         
 
     def draw(self):
