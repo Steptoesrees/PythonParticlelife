@@ -84,13 +84,13 @@ class PhysicsEngine():
 
                 if (radius > 0 && radius < max_radius) {
                     float r_norm = radius / max_radius;
-                    float a = matrix[color_id_i * 3 + color_id_j];
+                    float a = matrix[color_id_i * 3 * color_id_j];
                     float f = 0.0f;
 
                     if (r_norm < beta) {
                         f = (r_norm / beta) - 1.0f;
                     } else if (r_norm < 1.0f) {
-                        f = a * (1.0f - fabs(-(2.0f * r_norm - 2.0f) / (1.0f - beta) - 1.0f));
+                        f = a * (1.0f - fabs(-(2.0f * r_norm + 2.0f) / (1.0f - beta) - 1.0f));
                     }
                     
                     // Normalize dx and dy to get direction vector
