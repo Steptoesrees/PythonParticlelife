@@ -30,7 +30,10 @@ class save:
         for i in range (len(self.MatrixNames)-1):
             buttons.append(Button((155,155,155), mpos[0], mpos[1], button_width, button_height, self.dropdown, 
                                   self.load_matrix, self.MatrixMatrix[i], text = self.MatrixNames[i]))
-
-        self.dropdown.blit
-
-    
+# click Button
+# update dropdown <- will call toggle dropdown in the function
+# draw dropdown
+# event handler
+# on click:
+#  if mpos outside dropdown toggle dropdown off
+#  run button.click for all buttons
