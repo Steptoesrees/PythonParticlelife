@@ -1,13 +1,16 @@
 import pygame
 from input_box import InputBox
 from Button import Button
-from saveLoad import save
+from saveLoad import save as s
 
 class matrixView():
-    def __init__(self, screen, xloc, yloc, height, width, Physics):
+    def __init__(self, screen, mainscreen, xloc, yloc, height, width, Physics):
         self.screen = screen
+        self.mainscreen = mainscreen
 
         self.matrix_view = pygame.Surface((width,height))
+
+        self.save = s(mainscreen)
 
         self.xloc = xloc
         self.yloc = yloc
@@ -24,8 +27,8 @@ class matrixView():
         self.header_thickness = self.cell_size//self.cell_ratio
         self.cells = self.create_cells()
 
-        self.saveButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+5), 80,20,self.screen, save.save_input, text = "Save Matrix")
-        self.load = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+30), 80,20,self.screen, save.draw, text = "Load Matrix")
+        self.saveButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+5), 80,20, self.matrix_view, self.save.save_input, text = "save Matrix")
+        self.loadButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+30), 80,20, self.matrix_view, self.save.update_dropdown, text = "Load Matrix")
         
 
     def draw(self):
@@ -64,9 +67,18 @@ class matrixView():
                     
                     self.cells[row][col].text = str(round(val,2))
 
+        #self.saveing and loading buttons
+        
+
 
 
         self.draw_cells()
+        self.saveButton.draw()
+        self.loadButton.draw()
+
+        if self.save.toggle_dropdown:
+            self.save.draw()
+
         self.screen.blit(self.matrix_view, (self.xloc, self.yloc))
 
     def create_cells(self):
@@ -88,11 +100,16 @@ class matrixView():
                 cell.draw(self.matrix_view)
 
     def input_event(self, event, mpos):
+        mpos = (mpos[0] - self.xloc, mpos[1] - self.yloc)
         for row in range(3):
             for col in range(3):
                 if self.cells[row][col].colour == self.cells[row][col].colour_inactive:
                     self.cells[row][col].text = ''
                 
-                if self.cells[row][col].onInput(event, (mpos[0],mpos[1]-20)) and len(self.cells[row][col].text) > 0:
+                if self.cells[row][col].onInput(event, mpos) and len(self.cells[row][col].text) > 0:
                     val = pygame.math.clamp(float(self.cells[row][col].text),-1.0,1.0)
                     self.physics_engine.matrix[row][col] = val
+
+        if event == pygame.MOUSEBUTTONDOWN:
+            self.saveButton.click(mpos)
+            self.loadButton.click(mpos)

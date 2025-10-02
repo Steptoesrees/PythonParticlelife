@@ -6,7 +6,16 @@ from saveLoad import save as s
 
 import Menu
 
-
+#
+#
+#
+#
+#
+# Make buttons on menu
+#
+#
+#
+#
 running = True
 pygame.init()
 class main():
@@ -21,7 +30,6 @@ class main():
         screen_info = pygame.display.Info()
         screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h))
         clock = pygame.time.Clock()
-        save = s(screen)
         
         physics_engine = PhysicsEngine()
         physics_engine.changeParticleCount(200)
@@ -59,7 +67,7 @@ class main():
                         if taskbar.mouse_in_taskbar(mousepos):
                             taskbar.click_buttons()   
                         elif menu.mouse_in_menu(mousepos):  
-                            menu.force_graph.click_buttons()
+                            menu.force_graph.click_buttons(event)
                             menu.graph_matrix_button.click((mousepos[0],mousepos[1]))
                             menu.sliderdrag = True 
                         else:  
@@ -92,8 +100,6 @@ class main():
             cam.drawParticles(screen, physics_engine)
 
             menu.draw()
-            save.update_dropdown()
-            save.draw()
             
             taskbar.draw(clock)
             

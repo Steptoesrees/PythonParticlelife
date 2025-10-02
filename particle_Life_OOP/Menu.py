@@ -3,7 +3,6 @@ from Button import Button
 from Slider import Sliders
 from matrixView import matrixView
 from forceGraph import ForceGraph
-from saveLoad import save
 class Menu:
     def __init__(self,screen, screen_width, screen_height, physics):
         self.screen = screen
@@ -22,7 +21,7 @@ class Menu:
         self.physics_engine = physics
 
         self.force_graph = ForceGraph(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
-        self.matrix_view = matrixView(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
+        self.matrix_view = matrixView(self.menu, screen, 0, 20, screen_height/4, screen_height/2, physics)
 
         self.create_buttons()
 

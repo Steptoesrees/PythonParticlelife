@@ -23,7 +23,7 @@ class save:
         self.main_screen = screen
         self.dropdown = pygame.Surface((0, 0))
 
-    def save_input(self):
+    def save_input():
         pass
         
        
@@ -34,7 +34,7 @@ class save:
 # on click:
 #  if mpos outside dropdown toggle dropdown off
 #  run button.click for all buttons
-
+#
     def update_dropdown(self):
         self.toggle_dropdown = not self.toggle_dropdown
         mpos = pygame.mouse.get_pos()
@@ -62,7 +62,7 @@ class save:
         if event == pygame.MOUSEBUTTONDOWN and event.button == 1:
             mpos1 = pygame.mouse.get_pos(0)
             mpos2 = pygame.mouse.get_pos(1)
-            mpos = (mpos1+self.dropdown_pos[0], mpos2 +self.dropdown_pos[1])
+            mpos = (mpos1 - self.dropdown_pos[0], mpos2 - self.dropdown_pos[1])
             for counter in range (len(self.dropdown_buttons)):
                 self.dropdown_buttons.click(mpos)
                 
