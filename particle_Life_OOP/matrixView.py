@@ -110,6 +110,7 @@ class matrixView():
                     val = pygame.math.clamp(float(self.cells[row][col].text),-1.0,1.0)
                     self.physics_engine.matrix[row][col] = val
 
-        if event == pygame.MOUSEBUTTONDOWN:
-            self.saveButton.click(mpos)
-            self.loadButton.click(mpos)
+    def save_buttons(self,mpos):
+        mpos = (mpos[0] - self.xloc, mpos[1] - self.yloc)
+        self.saveButton.click(mpos)
+        self.loadButton.click(mpos)
