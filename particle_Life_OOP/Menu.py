@@ -22,7 +22,7 @@ class Menu:
         self.physics_engine = physics
 
         self.force_graph = ForceGraph(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
-        self.matrix_view = matrixView(self.menu, screen, 0, 20, screen_height/4, screen_height/2, physics)
+        self.matrix_view = matrixView(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
 
         self.create_buttons()
 

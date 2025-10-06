@@ -4,13 +4,12 @@ from Button import Button
 from saveLoad import save as s
 
 class matrixView():
-    def __init__(self, screen, mainscreen, xloc, yloc, height, width, Physics):
+    def __init__(self, screen, xloc, yloc, height, width, Physics):
         self.screen = screen
-        self.mainscreen = mainscreen
 
         self.matrix_view = pygame.Surface((width,height))
 
-        self.save = s(mainscreen)
+        self.save = s(screen)
 
         self.xloc = xloc
         self.yloc = yloc
@@ -76,10 +75,12 @@ class matrixView():
         self.saveButton.draw()
         self.loadButton.draw()
 
+        self.screen.blit(self.matrix_view, (self.xloc, self.yloc))
+
         if self.save.toggle_dropdown:
             self.save.draw()
 
-        self.screen.blit(self.matrix_view, (self.xloc, self.yloc))
+        
 
     def create_cells(self):
         self.cells = []
@@ -112,5 +113,8 @@ class matrixView():
 
     def save_buttons(self,mpos):
         mpos = (mpos[0] - self.xloc, mpos[1] - self.yloc)
-        self.saveButton.click(mpos)
-        self.loadButton.click(mpos)
+        if self.saveButton.click(mpos) == False:
+            self.save.toggle_input = False
+        if self.loadButton.click(mpos) == False:
+            self.save.toggle_dropdown = False
+        print(self.save.toggle_dropdown)

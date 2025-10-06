@@ -51,8 +51,8 @@ class save:
         
         i = 1
         for i in range (len(self.MatrixNames)):
-            self.dropdown_buttons.append(self.update_matrix((155,155,155), padding, (button_height*i + padding*(i+1)), button_width, button_height, self.dropdown, 
-                                  self.draw, self.MatrixMatrix[i], text = self.MatrixNames[i]))
+            self.dropdown_buttons.append(Button((155,155,155), padding, (button_height*i + padding*(i+1)), button_width, button_height, self.dropdown, 
+                                  self.update_matrix, self.MatrixMatrix[i], text = f'{self.MatrixNames[i]}'))
             self.dropdown_buttons[i].surface = self.dropdown
             self.dropdown_buttons[i].draw()
     
@@ -74,3 +74,7 @@ class save:
 
     def update_matrix(self, newmatrix):
         PhysicsEngine.matrix = newmatrix
+
+    #fix clicking off the menu,
+    #implement loading functionality
+    #create the saving menu & functionality.

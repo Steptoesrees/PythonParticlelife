@@ -29,6 +29,7 @@ class main():
 
         screen_info = pygame.display.Info()
         screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h))
+        print(screen)
         clock = pygame.time.Clock()
         
         physics_engine = PhysicsEngine()
