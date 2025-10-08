@@ -92,10 +92,10 @@ class main():
 
                 if event.type == pygame.MOUSEWHEEL:
                     if event.y < 0:
-                        cam.zoomOut(event.y)
+                        cam.zoomOut(event.y, mousepos)
                         
                     if event.y > 0:
-                            cam.zoomIn(event.y)
+                            cam.zoomIn(event.y, mousepos)
 
             physics_engine.interactions()
 

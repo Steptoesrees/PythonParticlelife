@@ -15,17 +15,28 @@ class Camera:
             physics.particles[i].drawParticle(self.cam, self.cam_size)
         screen.blit(self.cam, (self.cam_x,self.cam_y))
         
-            
-
-    def zoomIn(self, zoom_amount):
-        self.cam_size += 50 * abs(zoom_amount)
+#relcoords = 1
+#pos1 = mpos/camsize
+#pos2 = (pos1*scale)*camsize
+#scam = scam - (pos2-pos1)
+    def zoomIn(self, zoom_amount, mpos):
+        scale = 50 * abs(zoom_amount)
+        relmouse = [mpos[0]-self.cam_x, mpos[1]-self.cam_y]
+        self.cam_size += scale
         self.cam_size = round(self.cam_size, 1)
+        self.cam_x = self.cam_x - (((relmouse[0]/self.cam_size)*scale)-(relmouse[0]/self.cam_size))
+        self.cam_y = self.cam_y - (((relmouse[1]/self.cam_size)*scale)-(relmouse[1]/self.cam_size))
+        
         self.cam = pygame.Surface((self.cam_size,self.cam_size))
     
-    def zoomOut(self, zoom_amount):
+    def zoomOut(self, zoom_amount, mpos):
+        scale = 50 * abs(zoom_amount)
+        relmouse = [mpos[0]-self.cam_x, mpos[1]-self.cam_y]
         self.cam_size -= 50 * abs(zoom_amount)
         if self.cam_size <= 0:
             self.cam_size = 1
+        self.cam_x = self.cam_x + (((relmouse[0]/self.cam_size)*scale)-(relmouse[0]/self.cam_size))
+        self.cam_y = self.cam_y + (((relmouse[1]/self.cam_size)*scale)-(relmouse[1]/self.cam_size))
         self.cam = pygame.Surface((self.cam_size,self.cam_size))
 
     def pan(self, dx, dy):

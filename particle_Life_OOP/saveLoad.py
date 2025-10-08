@@ -10,7 +10,7 @@ class save:
         self.toggle_dropdown = False
         self.toggle_input = False
 
-        with open("particle_Life_OOP\SavedMatrix.json", "r") as file:
+        with open("SavedMatrix.json", "r") as file:
             matrixes = json.load(file)
             self.MatrixNames =   [item['name'] for item in matrixes]
             self.MatrixMatrix =  [item['matrix'] for item in matrixes]
