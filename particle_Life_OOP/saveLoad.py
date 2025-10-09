@@ -28,7 +28,17 @@ class save:
         self.dropdown = pygame.Surface((0, 0))
 
     def save_input(self):
-        pass
+        self.toggle_input = not self.toggle_input
+        padding = 5
+        button_height = 20
+        button_width = 80
+        self.input_pos = pygame.mouse.get_pos()
+
+        self.input_area = pygame.Surface((button_width*2 + padding*2, button_height + padding*2))
+        self.name_box = InputBox((padding,padding), (button_width*2,button_height), text='name')
+        self.confirm_button = Button((155,155,155), padding*2+button_width*2, padding, button_width, button_height, self.input_area, self.update_matrix, None, text = "confirm")
+        self.name_box.draw(self.input_area)
+        self.confirm_button.draw()
         
        
 # click Button
@@ -77,7 +87,10 @@ class save:
             
 
     def draw(self):
-        self.main_screen.blit(self.dropdown, self.dropdown_pos)
+        if self.toggle_dropdown:
+            self.main_screen.blit(self.dropdown, self.dropdown_pos)
+        if self.toggle_input:
+            self.main_screen.blit(self.input_area, self.input_pos)
             
 
     def update_matrix(self, newmatrix):

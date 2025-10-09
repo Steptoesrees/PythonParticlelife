@@ -77,8 +77,7 @@ class matrixView():
 
         self.screen.blit(self.matrix_view, (self.xloc, self.yloc))
 
-        if self.save.toggle_dropdown:
-            self.save.draw()
+        self.save.draw()
 
         
 
