@@ -4,7 +4,7 @@ import json
 import pygame
 
 class save:
-    def __init__(self, screen, physics):
+    def __init__(self, screen, main_screen, physics):
         self.physics_engine = physics
         self.toggle_dropdown = False
         self.toggle_input = False
@@ -24,7 +24,7 @@ class save:
 
         self.dropdown_buttons = []
 
-        self.main_screen = screen
+        self.main_screen = main_screen
         self.dropdown = pygame.Surface((0, 0))
 
     def save_input(self):
@@ -34,8 +34,8 @@ class save:
         button_width = 80
         self.input_pos = pygame.mouse.get_pos()
 
-        self.input_area = pygame.Surface((button_width*2 + padding*2, button_height + padding*2))
-        self.name_box = InputBox((padding,padding), (button_width*2,button_height), text='name')
+        self.input_area = pygame.Surface((button_width*3 + padding*3, button_height + padding*2))
+        self.name_box = InputBox((padding,padding), (button_height,button_width*2), text='name')
         self.confirm_button = Button((155,155,155), padding*2+button_width*2, padding, button_width, button_height, self.input_area, self.update_matrix, None, text = "confirm")
         self.name_box.draw(self.input_area)
         self.confirm_button.draw()
@@ -80,10 +80,11 @@ class save:
         
         if self.dropdown.get_rect().collidepoint(rel_mpos) == False:
             self.toggle_dropdown = False
-        
-        for counter in range (len(self.dropdown_buttons)):
-            self.dropdown_buttons[counter].click(rel_mpos)
-                
+
+        if self.toggle_dropdown and self.dropdown.get_rect().collidepoint(rel_mpos) == True:
+            for counter in range (len(self.dropdown_buttons)):
+                self.dropdown_buttons[counter].click(rel_mpos)
+                    
             
 
     def draw(self):

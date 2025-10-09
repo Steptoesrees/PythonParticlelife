@@ -4,12 +4,12 @@ from Button import Button
 from saveLoad import save as s
 
 class matrixView():
-    def __init__(self, screen, xloc, yloc, height, width, Physics):
+    def __init__(self, screen, main_screen, xloc, yloc, height, width, Physics):
         self.screen = screen
 
         self.matrix_view = pygame.Surface((width,height))
 
-        self.save = s(screen, Physics)
+        self.save = s(screen, main_screen, Physics)
 
         self.xloc = xloc
         self.yloc = yloc
@@ -77,7 +77,7 @@ class matrixView():
 
         self.screen.blit(self.matrix_view, (self.xloc, self.yloc))
 
-        self.save.draw()
+        
 
         
 

@@ -22,7 +22,7 @@ class Menu:
         self.physics_engine = physics
 
         self.force_graph = ForceGraph(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
-        self.matrix_view = matrixView(self.menu, 0, 20, screen_height/4, screen_height/2, physics)
+        self.matrix_view = matrixView(self.menu, self.screen, 0, 20, screen_height/4, screen_height/2, physics)
 
         self.create_buttons()
 
@@ -45,6 +45,7 @@ class Menu:
             else:
                 self.matrix_view.draw()
             self.screen.blit(self.menu, (0,0))
+            self.matrix_view.save.draw()
     
     def toggle_graph_matrix(self):
         if self.graph_or_matrix == 1:
