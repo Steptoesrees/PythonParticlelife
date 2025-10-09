@@ -1,12 +1,11 @@
 from input_box import InputBox
 from Button import Button
-from physicsEngine import PhysicsEngine
 import json
 import pygame
 
 class save:
-    def __init__(self, screen):
-
+    def __init__(self, screen, physics):
+        self.physics_engine = physics
         self.toggle_dropdown = False
         self.toggle_input = False
         try:
@@ -83,7 +82,7 @@ class save:
 
     def update_matrix(self, newmatrix):
         print("we got here")
-        PhysicsEngine.matrix = newmatrix
+        self.physics_engine.matrix = newmatrix
 
     #fix clicking of the menu,
     #implement loading functionality

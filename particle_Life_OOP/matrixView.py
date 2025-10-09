@@ -9,7 +9,7 @@ class matrixView():
 
         self.matrix_view = pygame.Surface((width,height))
 
-        self.save = s(screen)
+        self.save = s(screen, Physics)
 
         self.xloc = xloc
         self.yloc = yloc
