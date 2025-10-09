@@ -1,12 +1,10 @@
 import pygame
 from Button import Button
-from saveLoad import save
 
 class ForceGraph():
     def __init__(self, screen, xloc, yloc, height, width, Physics):
         self.screen = screen
 
-        self.saveing = save(screen)
 
         self.graph = pygame.Surface((width,height))
         self.axis = pygame.Surface((width-120,height-70))
@@ -40,7 +38,6 @@ class ForceGraph():
         self.graph1_b.click(mouse_pos)
         self.graph2_b.click(mouse_pos)
         self.graph3_b.click(mouse_pos)
-        self.saveing.event_handler(event)
 
 
 

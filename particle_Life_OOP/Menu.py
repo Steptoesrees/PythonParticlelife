@@ -36,13 +36,14 @@ class Menu:
     def draw(self):
         self.menu.fill((43,42,51))
         if self.visible:
+            
+            self.update_slider_values()
+            self.draw_sliders()
+            self.draw_buttons()
             if self.graph_or_matrix == 1:
                 self.force_graph.draw()
             else:
                 self.matrix_view.draw()
-            self.update_slider_values()
-            self.draw_sliders()
-            self.draw_buttons()
             self.screen.blit(self.menu, (0,0))
     
     def toggle_graph_matrix(self):

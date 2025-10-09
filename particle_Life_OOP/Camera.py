@@ -24,8 +24,9 @@ class Camera:
         relmouse = [mpos[0]-self.cam_x, mpos[1]-self.cam_y]
         self.cam_size += scale
         self.cam_size = round(self.cam_size, 1)
-        self.cam_x = self.cam_x - (((relmouse[0]/self.cam_size)*scale)-(relmouse[0]/self.cam_size))
-        self.cam_y = self.cam_y - (((relmouse[1]/self.cam_size)*scale)-(relmouse[1]/self.cam_size))
+        if self.cam_size > 40:
+            self.cam_x = self.cam_x - (((relmouse[0]/self.cam_size)*scale)-(relmouse[0]/self.cam_size))
+            self.cam_y = self.cam_y - (((relmouse[1]/self.cam_size)*scale)-(relmouse[1]/self.cam_size))
         
         self.cam = pygame.Surface((self.cam_size,self.cam_size))
     
@@ -35,8 +36,9 @@ class Camera:
         self.cam_size -= 50 * abs(zoom_amount)
         if self.cam_size <= 0:
             self.cam_size = 1
-        self.cam_x = self.cam_x + (((relmouse[0]/self.cam_size)*scale)-(relmouse[0]/self.cam_size))
-        self.cam_y = self.cam_y + (((relmouse[1]/self.cam_size)*scale)-(relmouse[1]/self.cam_size))
+        if self.cam_size > 40:
+            self.cam_x = self.cam_x + (((relmouse[0]/self.cam_size)*scale)-(relmouse[0]/self.cam_size))
+            self.cam_y = self.cam_y + (((relmouse[1]/self.cam_size)*scale)-(relmouse[1]/self.cam_size))
         self.cam = pygame.Surface((self.cam_size,self.cam_size))
 
     def pan(self, dx, dy):

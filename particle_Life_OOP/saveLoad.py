@@ -9,11 +9,16 @@ class save:
 
         self.toggle_dropdown = False
         self.toggle_input = False
-
-        with open("SavedMatrix.json", "r") as file:
-            matrixes = json.load(file)
-            self.MatrixNames =   [item['name'] for item in matrixes]
-            self.MatrixMatrix =  [item['matrix'] for item in matrixes]
+        try:
+            with open("SavedMatrix.json", "r") as file:
+                matrixes = json.load(file)
+                self.MatrixNames =   [item['name'] for item in matrixes]
+                self.MatrixMatrix =  [item['matrix'] for item in matrixes]
+        except:
+            with open("particle_Life_OOP//SavedMatrix.json", "r") as file:
+                matrixes = json.load(file)
+                self.MatrixNames =   [item['name'] for item in matrixes]
+                self.MatrixMatrix =  [item['matrix'] for item in matrixes]
 
         self.dropdown_pos = (0, 0)
         self.input_pos = (0, 0)
@@ -23,7 +28,7 @@ class save:
         self.main_screen = screen
         self.dropdown = pygame.Surface((0, 0))
 
-    def save_input():
+    def save_input(self):
         pass
         
        
@@ -50,6 +55,7 @@ class save:
         self.dropdown = pygame.Surface((width,height))
         
         i = 1
+        self.dropdown_buttons
         for i in range (len(self.MatrixNames)):
             self.dropdown_buttons.append(Button((155,155,155), padding, (button_height*i + padding*(i+1)), button_width, button_height, self.dropdown, 
                                   self.update_matrix, self.MatrixMatrix[i], text = f'{self.MatrixNames[i]}'))
@@ -58,13 +64,16 @@ class save:
     
 
 
-    def event_handler(self, event):
-        if event == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            mpos1 = pygame.mouse.get_pos(0)
-            mpos2 = pygame.mouse.get_pos(1)
-            mpos = (mpos1 - self.dropdown_pos[0], mpos2 - self.dropdown_pos[1])
-            for counter in range (len(self.dropdown_buttons)):
-                self.dropdown_buttons.click(mpos)
+    def event_handler(self, event,mpos):
+        mpos = mpos
+        rel_mpos = (mpos[0] - self.dropdown_pos[0], mpos[1] - self.dropdown_pos[1] + 20 )#20 to adjust for taskbar
+        print(rel_mpos)
+        
+        if self.dropdown.get_rect().collidepoint(rel_mpos) == False:
+            self.toggle_dropdown = False
+        
+        for counter in range (len(self.dropdown_buttons)):
+            self.dropdown_buttons[counter].click(rel_mpos)
                 
             
 
@@ -73,8 +82,9 @@ class save:
             
 
     def update_matrix(self, newmatrix):
+        print("we got here")
         PhysicsEngine.matrix = newmatrix
 
-    #fix clicking off the menu,
+    #fix clicking of the menu,
     #implement loading functionality
     #create the saving menu & functionality.

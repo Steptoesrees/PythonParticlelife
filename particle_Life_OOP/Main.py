@@ -6,16 +6,7 @@ from saveLoad import save as s
 
 import Menu
 
-#
-#
-#
-#
-#
-# Make buttons on menu
-#
-#
-#
-#
+
 running = True
 pygame.init()
 class main():
@@ -71,7 +62,6 @@ class main():
                             menu.force_graph.click_buttons(event)
                             menu.graph_matrix_button.click((mousepos[0],mousepos[1]))
                             menu.sliderdrag = True 
-                            menu.matrix_view.save_buttons(mousepos)
                         else:  
                             cam.dragging = True
 
