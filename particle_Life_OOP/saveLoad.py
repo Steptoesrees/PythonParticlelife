@@ -27,16 +27,19 @@ class save:
         self.main_screen = main_screen
         self.dropdown = pygame.Surface((0, 0))
 
-    def save_input(self):
-        self.toggle_input = not self.toggle_input
         padding = 5
         button_height = 20
         button_width = 80
-        self.input_pos = pygame.mouse.get_pos()
-
         self.input_area = pygame.Surface((button_width*3 + padding*3, button_height + padding*2))
         self.name_box = InputBox((padding,padding), (button_height,button_width*2), text='name')
         self.confirm_button = Button((155,155,155), padding*2+button_width*2, padding, button_width, button_height, self.input_area, self.update_matrix, None, text = "confirm")
+
+    def save_input(self):
+        self.toggle_input = not self.toggle_input
+        
+        self.input_pos = pygame.mouse.get_pos()
+
+        
         self.name_box.draw(self.input_area)
         self.confirm_button.draw()
         
@@ -84,6 +87,10 @@ class save:
         if self.toggle_dropdown and self.dropdown.get_rect().collidepoint(rel_mpos) == True:
             for counter in range (len(self.dropdown_buttons)):
                 self.dropdown_buttons[counter].click(rel_mpos)
+        
+        rel_mpos = (mpos[0] - self.input_pos[0], mpos[1] - self.input_pos[1] + 20 )
+        if self.toggle_input and self.input_area.get_rect().collidepoint(rel_mpos) == True:
+                self.name_box.onInputText(event, rel_mpos)
                     
             
 
@@ -95,7 +102,6 @@ class save:
             
 
     def update_matrix(self, newmatrix):
-        print("we got here")
         self.physics_engine.matrix = newmatrix
 
     #fix clicking of the menu,

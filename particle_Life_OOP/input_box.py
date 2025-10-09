@@ -1,5 +1,4 @@
 import pygame
-
 class InputBox():
     TextOffsetX = 5
     TextOffsety = 2.5
@@ -38,7 +37,20 @@ class InputBox():
             if event.key == pygame.K_RETURN and self.colour == self.colour_active:
                 self.colour = self.colour_inactive
                 return True
-                
+
+    def onInputText(self, event, mousepos):
+        print("here")
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(mousepos):
+                print("and here")
+
+                self.colour = self.colour_active
+
+            else:
+                self.colour = self.colour_inactive
+
+        if event.type == pygame.TEXTINPUT and self.colour == self.colour_active:
+            self.text+= event.text
 
         
 
