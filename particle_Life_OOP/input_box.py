@@ -43,7 +43,6 @@ class InputBox():
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(mousepos):
                 print("and here")
-
                 self.colour = self.colour_active
 
             else:

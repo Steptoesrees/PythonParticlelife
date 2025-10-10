@@ -27,21 +27,25 @@ class save:
         self.main_screen = main_screen
         self.dropdown = pygame.Surface((0, 0))
 
+        # initialise save area
         padding = 5
         button_height = 20
-        button_width = 80
-        self.input_area = pygame.Surface((button_width*3 + padding*3, button_height + padding*2))
-        self.name_box = InputBox((padding,padding), (button_height,button_width*2), text='name')
-        self.confirm_button = Button((155,155,155), padding*2+button_width*2, padding, button_width, button_height, self.input_area, self.update_matrix, None, text = "confirm")
+        button_width = 60
+        input_width = 140
+        area_width = input_width + button_width + padding*3
+        area_height = button_height + padding*2
+        self.matrix_data = ["name", self.physics_engine.matrix]
+        print (self.matrix_data)
+        self.save_area = pygame.Surface((area_width,area_height))
+        self.input_box = InputBox((padding,padding), (input_width, button_height), "enter matrix name")
+        self.confirm_button = Button((100,100,100), (padding*2)+input_width, padding, button_width, button_height, self.save_area, self.save_matrix, self.matrix_data)
+        
 
     def save_input(self):
         self.toggle_input = not self.toggle_input
-        
-        self.input_pos = pygame.mouse.get_pos()
-
-        
-        self.name_box.draw(self.input_area)
-        self.confirm_button.draw()
+        self.toggle_dropdown = False
+        mpos = pygame.mouse.get_pos()
+        self.input_pos = mpos
         
        
 # click Button
@@ -54,6 +58,7 @@ class save:
 #
     def update_dropdown(self):
         self.toggle_dropdown = not self.toggle_dropdown
+        self.toggle_input = False
         mpos = pygame.mouse.get_pos()
         padding = 5
         button_height = 20
@@ -87,10 +92,8 @@ class save:
         if self.toggle_dropdown and self.dropdown.get_rect().collidepoint(rel_mpos) == True:
             for counter in range (len(self.dropdown_buttons)):
                 self.dropdown_buttons[counter].click(rel_mpos)
-        
-        rel_mpos = (mpos[0] - self.input_pos[0], mpos[1] - self.input_pos[1] + 20 )
-        if self.toggle_input and self.input_area.get_rect().collidepoint(rel_mpos) == True:
-                self.name_box.onInputText(event, rel_mpos)
+      
+      
                     
             
 
@@ -98,12 +101,41 @@ class save:
         if self.toggle_dropdown:
             self.main_screen.blit(self.dropdown, self.dropdown_pos)
         if self.toggle_input:
-            self.main_screen.blit(self.input_area, self.input_pos)
+            self.confirm_button.draw()
+            self.input_box.draw(self.save_area)
+            self.main_screen.blit(self.save_area, self.input_pos)
             
 
     def update_matrix(self, newmatrix):
         self.physics_engine.matrix = newmatrix
 
+
+
+    def save_matrix(self, data):
+        json_data = {"name": data[0], "matrix": data[1]}
+        try:
+            #from geeksforgeeks
+            with open("SavedMatrix.json", "r+") as file:
+                matrixes = json.load(file)
+                matrixes.append(json_data)
+                file.seek(0)
+                json.dump(matrixes, file)
+                
+        except:
+            #from geeksforgeeks
+            with open("particle_Life_OOP//SavedMatrix.json", "r+") as file:
+                matrixes = json.load(file)
+                matrixes.append(json_data)
+                file.seek(0)
+                json.dump(matrixes, file)
+                
+
     #fix clicking of the menu,
     #implement loading functionality
     #create the saving menu & functionality.
+
+
+    #SAVE MATIX
+    #initialise with a surface, input area and button.
+    #event handling
+    #   
