@@ -26,7 +26,7 @@ class matrixView():
         self.header_thickness = self.cell_size//self.cell_ratio
         self.cells = self.create_cells()
 
-        self.saveButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+5), 80,20, self.matrix_view, self.save.save_input, text = "save Matrix")
+        self.saveButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+5), 80,20, self.matrix_view, self.save.activate_input, text = "save Matrix")
         self.loadButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+30), 80,20, self.matrix_view, self.save.update_dropdown, text = "Load Matrix")
         
 

@@ -37,11 +37,11 @@ class save:
         self.matrix_data = ["name", self.physics_engine.matrix]
         print (self.matrix_data)
         self.save_area = pygame.Surface((area_width,area_height))
-        self.input_box = InputBox((padding,padding), (input_width, button_height), "enter matrix name")
-        self.confirm_button = Button((100,100,100), (padding*2)+input_width, padding, button_width, button_height, self.save_area, self.save_matrix, self.matrix_data)
+        self.input_box = InputBox((padding,padding), (button_height, input_width), "enter matrix name")
+        self.confirm_button = Button((200,200,200), (padding*2)+input_width, padding, button_width, button_height, self.save_area, self.save_matrix, self.matrix_data)
         
 
-    def save_input(self):
+    def activate_input(self):
         self.toggle_input = not self.toggle_input
         self.toggle_dropdown = False
         mpos = pygame.mouse.get_pos()
@@ -83,16 +83,22 @@ class save:
 
     def event_handler(self, event,mpos):
         mpos = mpos
-        rel_mpos = (mpos[0] - self.dropdown_pos[0], mpos[1] - self.dropdown_pos[1] + 20 )#20 to adjust for taskbar
-        print(rel_mpos)
-        
-        if self.dropdown.get_rect().collidepoint(rel_mpos) == False:
-            self.toggle_dropdown = False
+        if self.toggle_dropdown:
+            rel_mpos = (mpos[0] - self.dropdown_pos[0], mpos[1] - self.dropdown_pos[1] + 20 )#20 to adjust for taskbar
+            if self.dropdown.get_rect().collidepoint(rel_mpos) == False:
+                self.toggle_dropdown = False
 
-        if self.toggle_dropdown and self.dropdown.get_rect().collidepoint(rel_mpos) == True:
-            for counter in range (len(self.dropdown_buttons)):
-                self.dropdown_buttons[counter].click(rel_mpos)
-      
+            else:
+                for counter in range (len(self.dropdown_buttons)):
+                    self.dropdown_buttons[counter].click(rel_mpos)
+        if self.toggle_input:
+            rel_mpos = (mpos[0] - self.input_pos[0], mpos[1] - self.input_pos[1] + 20 )
+            if self.save_area.get_rect().collidepoint(rel_mpos) == False:
+                self.toggle_input = False
+            
+            else:
+                self.input_box.onInputText(event, rel_mpos)
+                self.confirm_button.click(rel_mpos)
       
                     
             
@@ -101,8 +107,8 @@ class save:
         if self.toggle_dropdown:
             self.main_screen.blit(self.dropdown, self.dropdown_pos)
         if self.toggle_input:
-            self.confirm_button.draw()
             self.input_box.draw(self.save_area)
+            self.confirm_button.draw()
             self.main_screen.blit(self.save_area, self.input_pos)
             
 
@@ -120,6 +126,8 @@ class save:
                 matrixes.append(json_data)
                 file.seek(0)
                 json.dump(matrixes, file)
+                self.MatrixNames =   [item['name'] for item in matrixes]
+                self.MatrixMatrix =  [item['matrix'] for item in matrixes]
                 
         except:
             #from geeksforgeeks
@@ -128,6 +136,8 @@ class save:
                 matrixes.append(json_data)
                 file.seek(0)
                 json.dump(matrixes, file)
+                self.MatrixNames =   [item['name'] for item in matrixes]
+                self.MatrixMatrix =  [item['matrix'] for item in matrixes]
                 
 
     #fix clicking of the menu,
