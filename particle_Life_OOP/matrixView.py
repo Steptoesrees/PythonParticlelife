@@ -28,6 +28,7 @@ class matrixView():
 
         self.saveButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+5), 80,20, self.matrix_view, self.save.activate_input, text = "save Matrix")
         self.loadButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+30), 80,20, self.matrix_view, self.save.update_dropdown, text = "Load Matrix")
+        self.removeButton = Button((155,155,155), (self.header_thickness + 20 + self.cell_size*3),(self.header_thickness+55), 80,20, self.matrix_view, self.save.update_rem_dropdown, text = "Del Matrix")
         
 
     def draw(self):
@@ -74,6 +75,7 @@ class matrixView():
         self.draw_cells()
         self.saveButton.draw()
         self.loadButton.draw()
+        self.removeButton.draw()
 
         self.screen.blit(self.matrix_view, (self.xloc, self.yloc))
 
@@ -112,9 +114,11 @@ class matrixView():
 
         self.save.event_handler(event,mpos)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if not self.save.toggle_input:
+            if not self.save.toggle_input and not self.save.toggle_rem_dropdown:
                 self.saveButton.click(mpos)
-            if not self.save.toggle_dropdown:
+            if not self.save.toggle_dropdown and not self.save.toggle_rem_dropdown:
                 self.loadButton.click(mpos)
+            if not self.save.toggle_dropdown and not self.save.toggle_input:
+                self.removeButton.click(mpos)
             
 
