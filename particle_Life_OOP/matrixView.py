@@ -109,8 +109,9 @@ class matrixView():
                 if self.cells[row][col].onInput(event, mpos) and len(self.cells[row][col].text) > 0:
                     val = pygame.math.clamp(float(self.cells[row][col].text),-1.0,1.0)
                     self.physics_engine.matrix[row][col] = val
+
+        self.save.event_handler(event,mpos)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            self.save.event_handler(event,mpos)
             if not self.save.toggle_input:
                 self.saveButton.click(mpos)
             if not self.save.toggle_dropdown:

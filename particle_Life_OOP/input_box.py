@@ -39,11 +39,10 @@ class InputBox():
                 return True
 
     def onInputText(self, event, mousepos):
-        print("here")
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(mousepos):
-                print("and here")
                 self.colour = self.colour_active
+                self.text = ""
 
             else:
                 self.colour = self.colour_inactive

@@ -34,11 +34,11 @@ class save:
         input_width = 140
         area_width = input_width + button_width + padding*3
         area_height = button_height + padding*2
-        self.matrix_data = ["name", self.physics_engine.matrix]
-        print (self.matrix_data)
+        
         self.save_area = pygame.Surface((area_width,area_height))
-        self.input_box = InputBox((padding,padding), (button_height, input_width), "enter matrix name")
-        self.confirm_button = Button((200,200,200), (padding*2)+input_width, padding, button_width, button_height, self.save_area, self.save_matrix, self.matrix_data)
+        self.input_box = InputBox((padding,padding), (button_height, input_width), "matrix")
+        self.matrix_data = [self.input_box.text, self.physics_engine.matrix]
+        self.confirm_button = Button((200,200,200), (padding*2)+input_width, padding, button_width, button_height, self.save_area, self.save_matrix, [self.input_box.text, self.physics_engine.matrix], text="confirm")
         
 
     def activate_input(self):
@@ -71,8 +71,7 @@ class save:
 
         self.dropdown = pygame.Surface((width,height))
         
-        i = 1
-        self.dropdown_buttons
+        self.dropdown_buttons = []
         for i in range (len(self.MatrixNames)):
             self.dropdown_buttons.append(Button((155,155,155), padding, (button_height*i + padding*(i+1)), button_width, button_height, self.dropdown, 
                                   self.update_matrix, self.MatrixMatrix[i], text = f'{self.MatrixNames[i]}'))
@@ -83,22 +82,25 @@ class save:
 
     def event_handler(self, event,mpos):
         mpos = mpos
-        if self.toggle_dropdown:
-            rel_mpos = (mpos[0] - self.dropdown_pos[0], mpos[1] - self.dropdown_pos[1] + 20 )#20 to adjust for taskbar
-            if self.dropdown.get_rect().collidepoint(rel_mpos) == False:
-                self.toggle_dropdown = False
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.toggle_dropdown:
+                rel_mpos = (mpos[0] - self.dropdown_pos[0], mpos[1] - self.dropdown_pos[1] + 20 )#20 to adjust for taskbar
+                if self.dropdown.get_rect().collidepoint(rel_mpos) == False:
+                    self.toggle_dropdown = False
 
-            else:
-                for counter in range (len(self.dropdown_buttons)):
-                    self.dropdown_buttons[counter].click(rel_mpos)
+                else:
+                    for counter in range (len(self.dropdown_buttons)):
+                        self.dropdown_buttons[counter].click(rel_mpos)
         if self.toggle_input:
             rel_mpos = (mpos[0] - self.input_pos[0], mpos[1] - self.input_pos[1] + 20 )
-            if self.save_area.get_rect().collidepoint(rel_mpos) == False:
+            if self.save_area.get_rect().collidepoint(rel_mpos) == False and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 self.toggle_input = False
             
             else:
                 self.input_box.onInputText(event, rel_mpos)
-                self.confirm_button.click(rel_mpos)
+                self.confirm_button.value = [self.input_box.text, self.physics_engine.matrix]
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.confirm_button.click(rel_mpos)
       
                     
             
