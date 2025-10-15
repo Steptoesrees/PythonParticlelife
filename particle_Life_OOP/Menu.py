@@ -203,11 +203,3 @@ class Taskbar():
         #checks if the mouse is over the taskbar
         return self.taskbar_rect.collidepoint(mousepos)
     
-
-
-
-
-
-                
-                
-                
