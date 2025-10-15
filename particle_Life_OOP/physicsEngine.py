@@ -6,16 +6,19 @@ from Particle import Particle
 class PhysicsEngine():
     #Handles the particle interactions
     def __init__(self):
-        self.particles = []
+        self.particles = [] #initialises particle list
+
+        #creates attributes
         self.max_Radius = 0.25
         self.friction_Factor = math.pow(0.5, 0.01 / 0.040)
         self.force_Factor = 10
-        self.matrix = [[],[],[]]
+        self.matrix = [[],[],[]] # interaction matrix
         self.beta = 0.15
-        self.randomMatrix()
+        self.randomMatrix() # randomises matrix
         self.paused = False
 
-        self.simarea = pygame.Surface((800,800))
+        self.simarea = pygame.Surface((800,800))# creates surface
+
 
     def addParticle(self):
         self.particles.append(Particle())
@@ -24,7 +27,7 @@ class PhysicsEngine():
         if len(self.particles) > 0:
             self.particles.pop()
 
-    def changeParticleCount(self, amount):
+    def changeParticleCount(self, amount): #adds or removes particles until the length of the particle list = the value passed into the function
         if amount > len(self.particles)+1:
             for i in range(amount-len(self.particles)):
                 self.addParticle()
@@ -32,12 +35,12 @@ class PhysicsEngine():
             for i in range(len(self.particles)-amount):
                 self.removeParticle()
     
-    def randomMatrix(self): 
+    def randomMatrix(self): #randomises the matrix
         rows = [] 
         for i in range(0,3): 
             row = [] 
             for j in range(0,3): 
-                row.append(round((random.uniform(0, 1) * 2 - 1),3)) 
+                row.append(round((random.uniform(0, 1) * 2 - 1),3)) #random number from -1-1 is put in the matrix
             rows.append(row) 
         self.matrix = rows
     
@@ -59,19 +62,21 @@ class PhysicsEngine():
         if self.paused:
             return
         #handles the interactions between particles
-        """COMMENT HOW THE MATHS WORK BRO FR FR (after making it in numpy ofc kekw)"""
-        for i in range(len(self.particles)):
-            total_force_x = 0 
-            total_force_y = 0 
+        for i in range(len(self.particles)): #loops through every particle
 
-            for j in range(len(self.particles)):
-                if i == j:
+            total_force_x = 0 
+            total_force_y = 0 #sets the force of the interaction to initially be 0
+
+            for j in range(len(self.particles)): #loops through every particle (so they can all interact with the current one)
+                if i == j: #if they are the same particle, skip
                     continue
                 else:
+
                     dx = (self.particles[j].pos_x - self.particles[i].pos_x) 
-                    dy = (self.particles[j].pos_y - self.particles[i].pos_y)
+                    dy = (self.particles[j].pos_y - self.particles[i].pos_y) #calculates the x and y distance
 
 
+                    #manipulates the distances to find the shortest distances with particle wrapping
                     if dx > 0.5:
                         dx -= 1.0
                     if dx < -0.5:
@@ -81,18 +86,21 @@ class PhysicsEngine():
                     if dy < -0.5:
                         dy += 1.0
 
-                    radius = math.sqrt(dx**2 + dy**2) 
+                    radius = math.sqrt(dx**2 + dy**2) #calculate the shortest distace
 
-                    if 0 < radius < self.max_Radius: 
+                    if 0 < radius < self.max_Radius: #checkif the particles are within range to interact
 
+                        #calculates the force to be applied
                         f = self.force(radius / self.max_Radius,self.matrix[self.particles[i].colour_ID][self.particles[j].colour_ID]) 
 
-                        total_force_x += dx / radius * f
+                        total_force_x += dx / radius * f #applies the force
                         total_force_y += dy / radius * f
 
-            total_force_x *= self.max_Radius * self.force_Factor
+            total_force_x *= self.max_Radius * self.force_Factor #scale by the forcefactor and max radius
             total_force_y *= self.max_Radius * self.force_Factor
 
+
+            #particle functions.
             self.particles[i].updateVelocity(self.friction_Factor, total_force_x, total_force_y)
 
             self.particles[i].updatePosition()
