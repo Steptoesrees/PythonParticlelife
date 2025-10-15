@@ -12,6 +12,7 @@ class Camera:
         self.dragging = False
 
 
+
     def drawParticles(self, screen, physics):
         #clears the sim area
         self.cam.fill((0,0,0))
