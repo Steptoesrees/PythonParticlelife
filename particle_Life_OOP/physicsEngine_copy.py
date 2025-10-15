@@ -17,6 +17,7 @@ class PhysicsEngine():
         self.beta = 0.15
         self.randomMatrix()
         self.paused = False
+        self.timestep = 1
 
         self.simarea = pygame.Surface((800,800))
 
@@ -168,54 +169,54 @@ class PhysicsEngine():
             # Fallback to numpy or do nothing if OpenCL is not available
             # For simplicity, we'll just return. You could implement the numpy version here as a fallback.
             return
-        
-        num_particles = len(self.particles)
-        if num_particles == 0:
-            return
+        for counter in range(int(self.timestep)):
+            num_particles = len(self.particles)
+            if num_particles == 0:
+                return
 
-        # --- Prepare data for OpenCL ---
-        # Using float32 is crucial for OpenCL compatibility
-        positions = numpy.array([[p.pos_x, p.pos_y] for p in self.particles], dtype=numpy.float32)
-        velocities = numpy.array([[p.vel_x, p.vel_y] for p in self.particles], dtype=numpy.float32)
-        color_ids = numpy.array([p.colour_ID for p in self.particles], dtype=numpy.int32)
-        matrix_flat = numpy.array(self.matrix, dtype=numpy.float32).flatten()
+            # --- Prepare data for OpenCL ---
+            # Using float32 is crucial for OpenCL compatibility
+            positions = numpy.array([[p.pos_x, p.pos_y] for p in self.particles], dtype=numpy.float32)
+            velocities = numpy.array([[p.vel_x, p.vel_y] for p in self.particles], dtype=numpy.float32)
+            color_ids = numpy.array([p.colour_ID for p in self.particles], dtype=numpy.int32)
+            matrix_flat = numpy.array(self.matrix, dtype=numpy.float32).flatten()
 
-        # --- Create OpenCL buffers ---
-        mf = cl.mem_flags
-        pos_buf = cl_array.to_device(self.queue, positions)
-        vel_buf = cl_array.to_device(self.queue, velocities) # This will be an in/out buffer
-        color_ids_buf = cl_array.to_device(self.queue, color_ids)
-        matrix_buf = cl_array.to_device(self.queue, matrix_flat)
-        
-        # Output buffer for positions
-        out_pos_buf = cl_array.empty_like(pos_buf)
+            # --- Create OpenCL buffers ---
+            mf = cl.mem_flags
+            pos_buf = cl_array.to_device(self.queue, positions)
+            vel_buf = cl_array.to_device(self.queue, velocities) # This will be an in/out buffer
+            color_ids_buf = cl_array.to_device(self.queue, color_ids)
+            matrix_buf = cl_array.to_device(self.queue, matrix_flat)
+            
+            # Output buffer for positions
+            out_pos_buf = cl_array.empty_like(pos_buf)
 
-        # --- Execute Kernel ---
-        self.prg.interactions(
-            self.queue, (num_particles,), None,
-            pos_buf.data,
-            color_ids_buf.data,
-            matrix_buf.data,
-            vel_buf.data, # Pass velocities as an in/out buffer
-            out_pos_buf.data,
-            numpy.float32(self.max_Radius),
-            numpy.float32(self.beta),
-            numpy.float32(self.force_Factor),
-            numpy.float32(self.friction_Factor),
-            numpy.int32(num_particles)
-        )
-        self.queue.finish()
+            # --- Execute Kernel ---
+            self.prg.interactions(
+                self.queue, (num_particles,), None,
+                pos_buf.data,
+                color_ids_buf.data,
+                matrix_buf.data,
+                vel_buf.data, # Pass velocities as an in/out buffer
+                out_pos_buf.data,
+                numpy.float32(self.max_Radius),
+                numpy.float32(self.beta),
+                numpy.float32(self.force_Factor),
+                numpy.float32(self.friction_Factor),
+                numpy.int32(num_particles)
+            )
+            self.queue.finish()
 
-        # --- Retrieve results ---
-        updated_positions = out_pos_buf.get()
-        updated_velocities = vel_buf.get()
+            # --- Retrieve results ---
+            updated_positions = out_pos_buf.get()
+            updated_velocities = vel_buf.get()
 
-        # --- Update particle objects ---
-        for i, p in enumerate(self.particles):
-            p.pos_x = float(updated_positions[i][0])
-            p.pos_y = float(updated_positions[i][1])
-            p.vel_x = float(updated_velocities[i][0])
-            p.vel_y = float(updated_velocities[i][1])
+            # --- Update particle objects ---
+            for i, p in enumerate(self.particles):
+                p.pos_x = float(updated_positions[i][0])
+                p.pos_y = float(updated_positions[i][1])
+                p.vel_x = float(updated_velocities[i][0])
+                p.vel_y = float(updated_velocities[i][1])
 
 
 

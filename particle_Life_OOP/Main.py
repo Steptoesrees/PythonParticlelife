@@ -6,36 +6,39 @@ from saveLoad import save as s
 
 import Menu
 
-
-running = True
-pygame.init()
+#main class, everything starts here
 class main():
+    #constructor function
     def __init__(self):
-        self.paused = False
-        self.run()
+        self.run() #calls the run function
 
     def run(self):
         running = True
         
-
-        screen_info = pygame.display.Info()
+        #gets the computer's monitor size, sets window size to be the size of the monitor
+        screen_info = pygame.display.Info() 
         screen = pygame.display.set_mode((screen_info.current_w, screen_info.current_h))
-        print(screen)
+        
+        #initialises clock
         clock = pygame.time.Clock()
         
+        #creates objects for the main componants of the project
         physics_engine = PhysicsEngine()
-        physics_engine.changeParticleCount(200)
         cam = Camera(0, 0,screen_info.current_h*2)
         menu = Menu.Menu(screen, screen_info.current_w, screen_info.current_h, physics_engine)
-        taskbar = Menu.Taskbar(screen, screen_info.current_w, screen_info.current_h, menu, physics_engine)
+        taskbar = Menu.Taskbar(screen, screen_info.current_w, screen_info.current_h, menu, physics_engine, cam)
         
         
-
+        #main game loop
         while running:
             
             mousepos = pygame.mouse.get_pos()
+
+            #clear screen
             screen.fill((0, 0, 0))
 
+
+            #event loop
             for event in pygame.event.get():
 
                 menu.input_event(event)
@@ -51,7 +54,7 @@ class main():
                         physics_engine.paused = not physics_engine.paused
 
 
-
+                #calls functions that only happen on a mouse clck
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
                     if event.button == 1:
@@ -66,12 +69,14 @@ class main():
                             cam.dragging = True
 
 
+                #toggles dragging toggles off on button release
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
                         cam.dragging = False
                         menu.sliderdrag = False
 
-                
+
+                #for moving the simulation area and the sliders                
                 if event.type == pygame.MOUSEMOTION:
                     rel = list(pygame.mouse.get_rel())
                     cam.pan(rel[0], rel[1])
@@ -87,6 +92,7 @@ class main():
                     if event.y > 0:
                             cam.zoomIn(event.y, mousepos)
 
+            #this function is where all the particle calculations happen
             physics_engine.interactions()
 
             cam.drawParticles(screen, physics_engine)
@@ -95,11 +101,13 @@ class main():
             
             taskbar.draw(clock)
             
+            #updates display, sets clock speedteams
             pygame.display.update()
             clock.tick(31)
 
 
 if __name__ == '__main__':
+    #initialises pygame, key repeat, and font, then calls the main class
     pygame.init()
     pygame.key.set_repeat(500, 50)
     pygame.key.start_text_input()
