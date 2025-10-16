@@ -105,6 +105,7 @@ class Sliders:
                 relative_pos = (self.slider_button_pos[0] - start_pos) / (self.slider_width / 2)
                 slider_value = relative_pos * self.max_val
 
+            self.slider_value = slider_value
             self.input_box.text = str(self.slider_value) #update the text in the box to be the value
         
         self.slider_button.button_rect.x = self.slider_button_pos[0] # update the position of the slider
