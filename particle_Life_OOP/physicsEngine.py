@@ -58,8 +58,8 @@ class PhysicsEngine():
         
     
     
-    def interactions(self): 
-        if self.paused:
+    def interactions(self, bypass=False): 
+        if self.paused and not bypass:
             return
         #handles the interactions between particles
         for i in range(len(self.particles)): #loops through every particle

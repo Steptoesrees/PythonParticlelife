@@ -27,13 +27,51 @@ class Particle():
 
     def drawVelocityVector(self, screen, ssize):
         #draws a line representing the direction and magnitude of a particles velocity
-        vel_x = self.vel_x*ssize
-        vel_y = self.vel_y*ssize
-        pos_x = self.pos_x*ssize
-        pos_y = self.pos_y*ssize
-        pygame.draw.line(screen,(100,100,100), (pos_x,pos_y), #starting point = particle position
-                         (pos_x+(vel_x/5), pos_y + (vel_y/5))) #end point = particle position + velocity 
-        #velocity divided by 5, as at its normal magnitude, the vectors look too big
+        wrap = False
+        vel_x = self.vel_x
+        vel_y = self.vel_y
+        x = self.pos_x
+        y = self.pos_y
+        x1 = x+(vel_x/5) #end pos of vector
+        y1 = y + (vel_y/5) #end pos of vecto
+        # finds values for start and end pos of wrapped vector
+        x4 = x
+        x5 = x1
+        y4 = y
+        y5 = y1
+        if x1 > 1:
+            wrap = True #indicates to draw the wrapped vector
+            x4 = x - 1 #start
+            x5 = x1 - 1 #end
+        if x1 < 0:
+            wrap = True
+            x4 = x + 1
+            x5 = x1 + 1
+
+        if y1 > 1:
+            wrap = True
+            y4 = y - 1
+            y5 = y1 - 1
+        if y1 < 0:
+            wrap = True
+            y4 = y + 1
+            y5 = y1 + 1
+        x = x*ssize
+        y = y*ssize
+        x1 = x1*ssize
+        y1 = y1*ssize
+        if wrap == False:
+            pygame.draw.line(screen,(100,100,100), (x,y), #starting point = particle position
+                            (x1, y1)) #end point = particle position + velocity  #velocity divided by 5, as at its normal magnitude, the vectors look too big
+        if wrap == True:
+            x4 = x4*ssize
+            y4 = y4*ssize
+            x5 = x5*ssize
+            y5 = y5*ssize
+            pygame.draw.line(screen,(100,100,100), (x,y), #starting point = particle position
+                            (x1, y1))
+            pygame.draw.line(screen,(100,100,100), (x4,y4),
+                        (x5,y5))
 
 
 
